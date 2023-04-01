@@ -37,9 +37,27 @@ const getItems = async (req, res) => {
 }
 
 
+const getItem = async (req, res) => {
+  let id = req.params.id
+
+  try {
+    let item = await Articles.findById(id)
+
+    return res.status(200).send({
+      status: "success",
+      item
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: "error",
+      message: err.message
+    });
+  }
+}
 
 
 module.exports = {
   create,
-  getItems
+  getItems,
+  getItem
 }
