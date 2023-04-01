@@ -6,6 +6,6 @@ const router = Router()
 
 router.post('/create', articlesControllers.create);
 
-router.get('/articles', getItemsController.getItems)
+router.get('/articles/:home?', getItemsController.getItems)
 
 module.exports = router;

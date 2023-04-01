@@ -20,7 +20,10 @@ const create = (req, res) => {
 
 const getItems = async (req, res) => {
   try {
-    const items = await Articles.find({});
+    let items = await Articles.find({})
+      .sort({ fecha: -1 })
+      .limit(req.params.home ? 3 : null);
+
     return res.status(200).send({
       status: "success",
       items
@@ -32,6 +35,7 @@ const getItems = async (req, res) => {
     });
   }
 }
+
 
 
 
