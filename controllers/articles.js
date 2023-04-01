@@ -55,9 +55,27 @@ const getItem = async (req, res) => {
   }
 }
 
+const deleteItem = async (req, res) => {
+  let id = req.params.id
+
+  try {
+    let item = await Articles.findByIdAndDelete({ _id: id })
+
+    return res.status(200).send({
+      status: "success",
+      item
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: "error",
+      message: err.message
+    });
+  }
+}
 
 module.exports = {
   create,
   getItems,
-  getItem
+  getItem,
+  deleteItem
 }
