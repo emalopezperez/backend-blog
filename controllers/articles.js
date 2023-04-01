@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator');
+const { validationResult, body } = require('express-validator');
 const Articles = require('../models/Articles')
 
 const create = (req, res) => {
@@ -56,9 +56,8 @@ const getItem = async (req, res) => {
 }
 
 const deleteItem = async (req, res) => {
-  let id = req.params.id
-
   try {
+    let id = req.params.id
     let item = await Articles.findByIdAndDelete({ _id: id })
 
     return res.status(200).send({
@@ -73,9 +72,42 @@ const deleteItem = async (req, res) => {
   }
 }
 
+const updateItem = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updates = req.body;
+    const options = { new: true };
+
+    // Validar los campos actualizados con express-validator
+    await body('titulo').optional().isString().run(req);
+    await body('contenido').optional().isString().run(req);
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const result = await Articles.findOneAndUpdate({ _id: id }, updates, options);
+
+    if (!result) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+
+    return res.status(200).json({
+      message: 'Article updated successfully',
+      article: result
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Failed to update article' });
+  }
+}
+
+
 module.exports = {
   create,
   getItems,
   getItem,
-  deleteItem
+  deleteItem,
+  updateItem
 }
