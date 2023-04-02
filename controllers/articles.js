@@ -1,5 +1,7 @@
 const { validationResult, body } = require('express-validator');
 const Articles = require('../models/Articles')
+const fs = require('fs');
+const { validateArticle } = require('../helpers/validation')
 
 const create = (req, res) => {
   const errors = validationResult(req);
@@ -104,10 +106,40 @@ const updateItem = async (req, res) => {
 }
 
 
+const uploadFiles = async (req, res) => {
+
+  if (!req.file && !req.files) {
+    return res.status(404).json({
+      message: 'peticion invalida'
+    });
+  }
+
+  const file = req.file.originalname
+  const fileSplit = file.split('\.')
+  const fileExtension = fileSplit[1]
+
+  if (fileExtension != "png" && fileExtension != "jpg"
+    && fileExtension != "jpeg" && fileExtension != "gif") {
+
+    fs.unlink(req.file.path, () => {
+      return res.status(400).json({
+        message: 'archivo no valido'
+      });
+    })
+  } else {
+    return res.status(200).json({
+      message: 'Article updated successfully',
+      file: req.file,
+      fileExtension: fileExtension
+    });
+  }
+}
+
 module.exports = {
   create,
   getItems,
   getItem,
   deleteItem,
-  updateItem
+  updateItem,
+  uploadFiles
 }
