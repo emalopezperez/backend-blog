@@ -6,6 +6,8 @@ const getItemControllers = require('../controllers/articles')
 const deleteItemControllers = require('../controllers/articles')
 const updateItemControllers = require('../controllers/articles')
 const uploadFilesControllers = require('../controllers/articles')
+const imagesControllers = require('../controllers/articles')
+const buscarControllers = require('../controllers/articles')
 
 const router = Router()
 
@@ -26,5 +28,7 @@ router.get('/article/:id', getItemControllers.getItem)
 router.delete('/article/:id', deleteItemControllers.deleteItem)
 router.put('/article/:id', updateItemControllers.updateItem)
 router.post('/subir-imagen/:id',[uploads.single('file')], uploadFilesControllers.uploadFiles)
+router.get('/imagen/:fichero', imagesControllers.image);
+router.get('/buscar/:busqueda', buscarControllers.search)
 
 module.exports = router;
