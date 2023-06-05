@@ -1,9 +1,9 @@
+
 require("dotenv").config()
 const { connection } = require('./dataBase/connection')
 const express = require('express')
 const cors = require("cors")
-const {createRoles} = require('./libs/initialSetup')
-
+const { createRoles } = require('./libs/initialSetup')
 
 // Conecion DB
 connection();
@@ -13,6 +13,7 @@ const app = express();
 createRoles();
 
 const port = process.env.PORT || 3000
+
 
 // Convierte los cuerpos de las solicitudes en objetos JSON
 app.use(express.json())

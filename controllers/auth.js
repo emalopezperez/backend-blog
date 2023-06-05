@@ -42,17 +42,13 @@ const singUp = async (req, res) => {
 
 
 
-
 const login = async (req, res) => {
-
   const user = await User.findOne({ email: req.body.email }).populate('roles')
 
   if (!user) {
     return res.status(400).json({ menssage: 'User no found' })
   }
-
   const matchPassword = await User.comparePassword(req.body.password, user.password)
-
   if (!matchPassword) {
     return res.status(400).json({ token: null, menssage: 'contrasena no valida' })
   }
@@ -61,9 +57,11 @@ const login = async (req, res) => {
     expiresIn: 86400
   })
 
-  res.status(200).json({ token })
+  res.status(200).json({ usuario: user, token })
 
 }
+
+
 
 module.exports = {
   singUp,

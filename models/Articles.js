@@ -5,6 +5,10 @@ const ArticlesShema = Schema({
     type: String,
     required: true
   },
+  autor: {
+    type: String,
+    required: true
+  },
   contenido: {
     type: String,
     required: true
