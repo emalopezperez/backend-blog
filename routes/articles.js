@@ -13,7 +13,7 @@ const router = Router()
 
 const path = multipart({ uploadDir: './imagenes/articulos' });
 
-router.post('/create', [verifyToken, path], articlesControllers.create);
+router.post('/create', [verifyToken, isAdmin, path], articlesControllers.create);
 router.get('/imagen/:fichero', imagesControllers.image);
 router.get('/articles/:home?', getItemsControllers.getItems)
 router.get('/article/:id', getItemControllers.getItem)

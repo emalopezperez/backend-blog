@@ -10,13 +10,13 @@ const create = (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { titulo, contenido, autor } = req.body;
+  const { titulo, contenido, autor, categoria, markdown } = req.body;
   const img_path = req.files.imagen.path;
 
   const str_img = img_path.split('\\');
   const str_imagen_blog = str_img[2];
 
-  const article = new Articles({ titulo, contenido,autor, imagen: str_imagen_blog });
+  const article = new Articles({ titulo, contenido, autor, categoria, markdown, imagen: str_imagen_blog });
 
   article.save()
     .then((savedArticle) => {

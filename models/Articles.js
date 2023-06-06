@@ -9,6 +9,14 @@ const ArticlesShema = Schema({
     type: String,
     required: true
   },
+  categoria: {
+    type: String,
+    required: true
+  },
+  markdown: {
+    type: String,
+    required: true
+  },
   contenido: {
     type: String,
     required: true
