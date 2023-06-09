@@ -86,10 +86,16 @@ const updateItem = async (req, res) => {
   try {
     const id = req.params.id;
     const updates = req.body;
+    const img_path = req.files.imagen.path;
+    const str_img = img_path.split('\\');
+    const str_imagen_blog = str_img[2];
+
     const options = { new: true };
 
     // Validar los campos actualizados con express-validator
     await body('titulo').optional().isString().run(req);
+    await body('categoria').optional().isString().run(req);
+    await body('markdown').optional().isString().run(req);
     await body('contenido').optional().isString().run(req);
 
     const errors = validationResult(req);
@@ -97,7 +103,19 @@ const updateItem = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const result = await Articles.findOneAndUpdate({ _id: id }, updates, options);
+    // Verificar campos y construir objeto de actualización
+    const updateFields = {};
+    if (updates.titulo) updateFields.titulo = updates.titulo;
+    if (updates.categoria) updateFields.categoria = updates.categoria;
+    if (updates.markdown) updateFields.markdown = updates.markdown;
+    if (updates.contenido) updateFields.contenido = updates.contenido;
+    if (str_imagen_blog) updateFields.imagen = str_imagen_blog;
+
+    const result = await Articles.findOneAndUpdate(
+      { _id: id },
+      updateFields,
+      options
+    );
 
     if (!result) {
       return res.status(404).json({ message: 'Article not found' });
@@ -111,7 +129,9 @@ const updateItem = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: 'Failed to update article' });
   }
-}
+};
+
+
 
 const image = (req, res) => {
   try {

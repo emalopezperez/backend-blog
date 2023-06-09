@@ -18,7 +18,7 @@ router.get('/imagen/:fichero', imagesControllers.image);
 router.get('/articles/:home?', getItemsControllers.getItems)
 router.get('/article/:id', getItemControllers.getItem)
 router.delete('/article/:id', [verifyToken, isAdmin], deleteItemControllers.deleteItem)
-
 router.get('/buscar/:busqueda', buscarControllers.search)
+router.put('/article/:id', [verifyToken, isAdmin, path], updateItemControllers.updateItem)
 
 module.exports = router;
