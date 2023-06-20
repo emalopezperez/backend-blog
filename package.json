@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./app.js",
     "dev": "nodemon ./app.js",
-    "test": "// echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
+
   },
   "author": "Emanuel Lopez",
   "license": "ISC",
@@ -25,7 +26,6 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.2.15",
     "nodemon": "^2.0.22"
   }
 }
