@@ -31,6 +31,6 @@ app.use("/api/auth", colaborador_router)
 
 
 // Escuchar peticiones http
-app.listen(port, () => {
+app.listen(3000, () => {
   console.log("Servidor corriendo en el puerto" + ' ' + port)
 })
