@@ -4,11 +4,12 @@ const cloudinary = require('../utils/cloudinary');
 const uploadImage = cloudinary.uploadImage;
 
 const createResource = async (req, res) => {
-  const { titulo, categoria } = req.body
+  const { titulo, categoria, link } = req.body
 
   const resource = new Resources({
     titulo,
-    categoria
+    categoria,
+    link
   })
 
   try {

@@ -9,6 +9,10 @@ const ResourcesShema = Schema({
     type: String,
     required: true
   },
+  link: {
+    type: String,
+    required: true
+  },
   titulo: {
     type: String,
     required: true
