@@ -24,6 +24,7 @@ const createResource = async (req, res) => {
     }
 
     await resource.save();
+    return res.status(201).json({ msg: "El artículo ha sido creado correctamente", resource });
   } catch (error) {
     console.error('Error al guardar el recurso:', error);
   }
