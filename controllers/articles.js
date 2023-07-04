@@ -3,7 +3,6 @@ const Articles = require('../models/Articles')
 const fs = require('fs');
 const path = require('path')
 
-
 const create = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

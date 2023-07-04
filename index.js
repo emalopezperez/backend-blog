@@ -4,6 +4,7 @@ const { connection } = require('./dataBase/connection')
 const express = require('express')
 const cors = require("cors")
 const { createRoles } = require('./libs/initialSetup')
+const fileUpload = require("express-fileupload")
 
 // Conecion DB
 connection();
@@ -21,16 +22,22 @@ app.use(express.urlencoded({ extended: true }))
 
 // Permite solicitudes desde cualquier origen
 app.use(cors())
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: './imagenes/recursos'
+}));
 
 //Rutas
 const routesArticles = require('./routes/articles')
 const colaborador_router = require('./routes/auth')
+const resource = require('./routes/resources')
 
 app.use("/api", routesArticles)
+app.use("/api/resource", resource)
 app.use("/api/auth", colaborador_router)
 
 
 // Escuchar peticiones http
 app.listen(3000, () => {
-  console.log("Servidor corriendo en el puerto" + ' ' + port)
+  console.log("Servidor corriendo en el puerto" + ' ')
 })
