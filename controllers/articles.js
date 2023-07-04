@@ -3,29 +3,34 @@ const Articles = require('../models/Articles')
 const fs = require('fs');
 const path = require('path')
 
-const create = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+const cloudinary = require('../utils/cloudinary');
+const uploadImage = cloudinary.uploadImage;
+
+const create = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { titulo, contenido, autor, categoria, markdown } = req.body;
+
+    const article = new Articles({ titulo, contenido, autor, categoria, markdown });
+
+    if (req.files?.imagen) {
+      const result = await uploadImage(req.files.imagen.tempFilePath);
+
+      article.imagen = result.secure_url
+    }
+
+    const savedArticle = await article.save();
+    return res.status(201).json({ msg: "El artículo ha sido creado correctamente", article: savedArticle });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Ha ocurrido un error al crear el artículo" });
   }
-
-  const { titulo, contenido, autor, categoria, markdown } = req.body;
-  const img_path = req.files.imagen.path;
-
-  const str_img = img_path.split('\\');
-  const str_imagen_blog = str_img[2];
-
-  const article = new Articles({ titulo, contenido, autor, categoria, markdown, imagen: str_imagen_blog });
-
-  article.save()
-    .then((savedArticle) => {
-      return res.status(201).json({ msg: "El artículo ha sido creado correctamente", article: savedArticle });
-    })
-    .catch((err) => {
-      console.error(err);
-      return res.status(500).json({ msg: "Ha ocurrido un error al crear el artículo" });
-    });
 };
+
 
 const getItems = async (req, res) => {
   try {

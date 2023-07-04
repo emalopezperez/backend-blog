@@ -26,8 +26,7 @@ const ArticlesShema = Schema({
     default: Date.now()
   },
   imagen: {
-    type: String,
-    default: "default.png"
+    type:String,
   },
 })
 
