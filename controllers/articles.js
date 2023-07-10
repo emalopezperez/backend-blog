@@ -220,6 +220,28 @@ const likes = async (req, res) => {
 };
 
 
+const getUserLikes = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    const savedArticles = user.savedArticles;
+    const articles = await Articles.find({ _id: { $in: savedArticles } });
+
+    console.log(articles);
+
+    res.status(200).json({ message: 'Datos del usuario obtenidos exitosamente', articles });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error al obtener los artículos que ha dado "me gusta" el usuario' });
+  }
+};
+
+
+
 
 
 module.exports = {
@@ -230,5 +252,6 @@ module.exports = {
   updateItem,
   search,
   image,
-  likes
+  likes,
+  getUserLikes
 }
