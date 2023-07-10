@@ -31,6 +31,14 @@ const UserScheme = new mongoose.Schema(
         ref: "Role",
       },
     ],
+
+    savedArticles: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article',
+      },
+    ],
+    
     createdAt: {
       type: Date,
       default: Date.now

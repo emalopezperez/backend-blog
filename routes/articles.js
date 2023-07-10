@@ -7,6 +7,7 @@ const deleteItemControllers = require('../controllers/articles')
 const updateItemControllers = require('../controllers/articles')
 const imagesControllers = require('../controllers/articles')
 const buscarControllers = require('../controllers/articles')
+const likesControllers = require('../controllers/articles')
 const { verifyToken, isAdmin } = require('../middlewares/authJwt')
 
 const router = Router()
@@ -20,5 +21,6 @@ router.get('/article/:id', getItemControllers.getItem)
 router.delete('/article/:id', [verifyToken, isAdmin], deleteItemControllers.deleteItem)
 router.get('/buscar/:busqueda', buscarControllers.search)
 router.put('/article/:id', [verifyToken, isAdmin, path], updateItemControllers.updateItem)
+router.post('/article/:id/like', [verifyToken], likesControllers.likes)
 
 module.exports = router;

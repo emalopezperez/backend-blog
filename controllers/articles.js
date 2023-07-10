@@ -1,5 +1,6 @@
 const { validationResult, body } = require('express-validator');
 const Articles = require('../models/Articles')
+const User = require('../models/Users')
 const fs = require('fs');
 const path = require('path')
 
@@ -185,6 +186,40 @@ const search = async (req, res) => {
   }
 }
 
+const likes = async (req, res) => {
+  try {
+    const articleId = req.params.id;
+    const userId = req.body.userId;
+
+    const article = await Articles.findById(articleId);
+    if (!article) {
+      return res.status(404).json({ error: 'Artículo no encontrado' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    if (!article.likes.includes(userId)) {
+      article.likes.push(userId);
+    }
+
+    if (!user.savedArticles.includes(articleId)) {
+      user.savedArticles.push(articleId);
+    }
+
+    await article.save();
+    await user.save();
+
+    res.status(200).json({ message: 'Me gusta guardado exitosamente' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error al dar "Me gusta" al artículo' });
+  }
+};
+
+
 
 
 module.exports = {
@@ -194,5 +229,6 @@ module.exports = {
   deleteItem,
   updateItem,
   search,
-  image
+  image,
+  likes
 }

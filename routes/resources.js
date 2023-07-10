@@ -4,7 +4,7 @@ const { verifyToken, isAdmin } = require('../middlewares/authJwt')
 
 const router = Router()
 
-router.post('/create-resource',[verifyToken, isAdmin], resource.createResource);
+router.post('/create-resource', resource.createResource);
 router.get('/get-resource', resource.getResource);
 
 

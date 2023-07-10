@@ -1,4 +1,5 @@
-const { Schema, model } = require('mongoose')
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 
 const ArticlesShema = Schema({
   titulo: {
@@ -28,6 +29,14 @@ const ArticlesShema = Schema({
   imagen: {
     type:String,
   },
+  likes: [
+    {
+      usuario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    },
+  ],
 })
 
 module.exports = model('articles', ArticlesShema)
