@@ -219,6 +219,44 @@ const likes = async (req, res) => {
   }
 };
 
+const deslike = async (req, res) => {
+  try {
+    const articleId = req.params.id;
+    const userId = req.body.userId;
+
+    const article = await Articles.findById(articleId);
+    if (!article) {
+      return res.status(404).json({ error: 'Artículo no encontrado' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Eliminar el ID del usuario de la lista de "likes" del artículo
+    const likeIndex = article.likes.indexOf(userId);
+    if (likeIndex !== -1) {
+      article.likes.splice(likeIndex, 1);
+    }
+
+    // Eliminar el ID del artículo de la lista de artículos guardados del usuario
+    const savedArticleIndex = user.savedArticles.indexOf(articleId);
+    if (savedArticleIndex !== -1) {
+      user.savedArticles.splice(savedArticleIndex, 1);
+    }
+
+    await article.save();
+    await user.save();
+
+    res.status(200).json({ message: 'Me gusta eliminado exitosamente' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error al eliminar el "Me gusta" del artículo' });
+  }
+};
+
+
 
 const getUserLikes = async (req, res) => {
   try {
@@ -242,8 +280,6 @@ const getUserLikes = async (req, res) => {
 
 
 
-
-
 module.exports = {
   create,
   getItems,
@@ -253,5 +289,6 @@ module.exports = {
   search,
   image,
   likes,
-  getUserLikes
+  deslike,
+  getUserLikes,
 }
