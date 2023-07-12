@@ -201,11 +201,15 @@ const likes = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    if (!article.likes.includes(userId)) {
+    if (article.likes.includes(userId)) {
+      return res.status(400).json({ error: 'Ya le diste "Me gusta" a este artículo' });
+    } else {
       article.likes.push(userId);
     }
 
-    if (!user.savedArticles.includes(articleId)) {
+    if (user.savedArticles.includes(articleId)) {
+      return res.status(400).json({ error: 'Ya tienes guardado este artículo' });
+    } else {
       user.savedArticles.push(articleId);
     }
 
@@ -218,6 +222,7 @@ const likes = async (req, res) => {
     res.status(500).json({ error: 'Error al dar "Me gusta" al artículo' });
   }
 };
+
 
 const deslike = async (req, res) => {
   try {
@@ -255,7 +260,6 @@ const deslike = async (req, res) => {
     res.status(500).json({ error: 'Error al eliminar el "Me gusta" del artículo' });
   }
 };
-
 
 
 const getUserLikes = async (req, res) => {
