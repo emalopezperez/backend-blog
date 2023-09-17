@@ -35,9 +35,24 @@ const create = async (req, res) => {
 
 const getItems = async (req, res) => {
   try {
-    let items = await Articles.find({})
-      .sort({ fecha: -1 })
-      .limit(req.params.home ? 3 : null);
+    const categoria = req.params.home;
+
+    let query = {};
+    if (categoria) {
+      query = { categoria: categoria };
+    }
+
+    let items;
+
+    if (Object.keys(query).length === 0) {
+      items = await Articles.find({})
+        .sort({ fecha: -1 })
+        .limit(req.params.home ? 3 : null);
+    } else {
+      items = await Articles.find(query)
+        .sort({ fecha: -1 })
+        .limit(req.params.home ? 3 : null);
+    }
 
     return res.status(200).send({
       status: "success",
@@ -50,6 +65,9 @@ const getItems = async (req, res) => {
     });
   }
 }
+
+
+
 
 
 const getItem = async (req, res) => {
