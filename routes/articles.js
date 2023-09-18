@@ -27,4 +27,7 @@ router.post('/article/like/:id', verifyToken, likesControllers.likes)
 router.delete('/article/deslike/:id', verifyToken, deslikeControllers.deslike);
 router.get('/user/likes/:userId', verifyToken, getLikesControllers.getUserLikes)
 
+router.post('/create-hero', [verifyToken, isAdmin], articlesControllers.createHero);
+router.get('/get-hero', getItemsControllers.getHero)
+
 module.exports = router;
